@@ -6,7 +6,9 @@
 
 **Minimal**, **fast** and **secure** Passkey (WebAuthn) relying party (RP) library for Zig.
 
-Supports both Zig stable 0.14+ and nightly (0.15+).
+Zig version support:
+1. v2.x - Supports Zig latest stable v0.15
+2. v1.x - Supports Zig v0.14
 
 ## Features
 
