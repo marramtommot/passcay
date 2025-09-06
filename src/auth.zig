@@ -307,7 +307,7 @@ test "verify with explicit challenge" {
     const test_challenge = "explicit_test_challenge";
 
     // Manually create a JSON string
-    var client_data = std.ArrayList(u8).init(allocator);
+    var client_data = std.array_list.Managed(u8).init(allocator);
     defer client_data.deinit();
     try client_data.appendSlice("{\"type\":\"webauthn.get\",\"challenge\":\"");
     try client_data.appendSlice(test_challenge);

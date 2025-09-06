@@ -382,7 +382,7 @@ pub fn encodeAttestationObject(
     auth_data: []const u8,
     att_stmt: []const u8,
 ) ![]const u8 {
-    var buffer = std.ArrayList(u8).init(allocator);
+    var buffer = std.array_list.Managed(u8).init(allocator);
     defer buffer.deinit();
 
     try buffer.append(0xA3); // Map, 3 pairs
@@ -457,7 +457,7 @@ pub const AuthData = struct {
 
 test "parseAttestationObject basic functionality" {
     const testing = std.testing;
-    var buffer = std.ArrayList(u8).init(testing.allocator);
+    var buffer = std.array_list.Managed(u8).init(testing.allocator);
     defer buffer.deinit();
 
     try buffer.append(0xA3);
@@ -494,7 +494,7 @@ test "parseCoseKey with EC2/P-256 key" {
     const testing = std.testing;
 
     // Create a COSE key for EC2/P-256
-    var buffer = std.ArrayList(u8).init(testing.allocator);
+    var buffer = std.array_list.Managed(u8).init(testing.allocator);
     defer buffer.deinit();
 
     // Map with 5 entries

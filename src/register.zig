@@ -385,7 +385,7 @@ test "verify skipping user presence verification" {
     key_pos += 1;
 
     // Create attestation object
-    var attestation_obj = std.ArrayList(u8).init(allocator);
+    var attestation_obj = std.array_list.Managed(u8).init(allocator);
     defer attestation_obj.deinit();
 
     // Map with 3 entries
