@@ -3,6 +3,15 @@
 
 ![Passcay Logo](docs/passcay-logo.png)
 
+> Fork notice
+>
+> This repository is a fork of `uzyn/passcay`, originally created by U-Zyn Chua.
+>
+> Original project:
+> `https://github.com/uzyn/passcay`
+>
+> Reason for this fork:
+> this fork keeps the upstream `v2.0.0` codebase and adds a small WebAuthn compatibility patch in `src/util.zig`, making `clientDataJSON` parsing permissive so payloads with extra browser fields such as `crossOrigin` are accepted.
 
 **Minimal**, **fast** and **secure** Passkey (WebAuthn) relying party (RP) library for Zig.
 
@@ -31,7 +40,7 @@ Add `passcay` to your `build.zig.zon` dependencies:
 ```zig
 .dependencies = .{
     .passcay = .{
-        .url = "https://github.com/uzyn/passcay/archive/main.tar.gz",
+        .url = "https://github.com/marramtommot/passcay/archive/main.tar.gz",
         // Optionally pin to a specific commit hash
     },
 },
