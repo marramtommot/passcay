@@ -1,0 +1,48 @@
+diff --git a/src/util.zig b/src/util.zig
+index da3f09f..c1d25ce 100644
+--- a/src/util.zig
++++ b/src/util.zig
+@@ -45,18 +45,38 @@ pub fn parseClientDataJson(allocator: Allocator, client_data_json_b64: []const u
+     }
+     defer if (need_free) allocator.free(client_data_json_slice);
+ 
+-    var parsed_json = try json.parseFromSlice(types.ClientDataJson, allocator, client_data_json_slice, .{});
++    // Parse permissively to ignore unknown fields like "crossOrigin".
++    var parsed_json = try json.parseFromSlice(json.Value, allocator, client_data_json_slice, .{});
+     defer parsed_json.deinit();
++    const obj = switch (parsed_json.value) {
++        .object => |o| o,
++        else => return error.InvalidClientDataJson,
++    };
++
++    const type_val = obj.get("type") orelse return error.InvalidClientDataJson;
++    const challenge_val = obj.get("challenge") orelse return error.InvalidClientDataJson;
++    const origin_val = obj.get("origin") orelse return error.InvalidClientDataJson;
+ 
+-    const client_data = parsed_json.value;
++    const type_str = switch (type_val) {
++        .string => |s| s,
++        else => return error.InvalidClientDataJson,
++    };
++    const challenge_str = switch (challenge_val) {
++        .string => |s| s,
++        else => return error.InvalidClientDataJson,
++    };
++    const origin_str = switch (origin_val) {
++        .string => |s| s,
++        else => return error.InvalidClientDataJson,
++    };
+ 
+-    const type_copy = try allocator.dupe(u8, client_data.type);
++    const type_copy = try allocator.dupe(u8, type_str);
+     errdefer allocator.free(type_copy);
+ 
+-    const challenge_copy = try allocator.dupe(u8, client_data.challenge);
++    const challenge_copy = try allocator.dupe(u8, challenge_str);
+     errdefer allocator.free(challenge_copy);
+ 
+-    const origin_copy = try allocator.dupe(u8, client_data.origin);
++    const origin_copy = try allocator.dupe(u8, origin_str);
+     errdefer allocator.free(origin_copy);
+ 
+     return types.ClientData{
